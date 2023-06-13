@@ -3,6 +3,7 @@
 #include <fstream>
 #include <chrono>
 #include <time.h>
+#include "ASBucket.h"
 using namespace std;
 
 void selectionSort(int a[], int n) {
@@ -10,24 +11,19 @@ void selectionSort(int a[], int n) {
         int selected = i;
 
         //Find min element in the rest of array
-        for (int j = i + 1; j < n; j++) {
-            if (a[j] < a[selected]) {
+        for (int j = i + 1; j < n; j++)
+            if (a[j] < a[selected])
                 selected = j;
-            }
-        }
 
         swap(a[i], a[selected]);
     }
 }
 
 void bubbleSort(int a[], int n) {
-    for (int i = 0; i < n - 1; i++) {
-        for (int j = 0; j < n - 1 - i; j++) {
-            if (a[j + 1] < a[j]) {
+    for (int i = 0; i < n - 1; i++)
+        for (int j = 0; j < n - 1 - i; j++)
+            if (a[j + 1] < a[j])
                 swap(a[j], a[j + 1]);
-            }
-        }
-    }
 }
 
 void insertionSort(int a[], int n) {
@@ -47,9 +43,8 @@ void insertionSort(int a[], int n) {
 
 void copyArray(int* sourceLeft, int* sourceRight, int* destination) {
     int* index = destination;
-    for (int* element = sourceLeft; element != sourceRight; element++) {
+    for (int* element = sourceLeft; element != sourceRight; element++)
         *(index++) = *element;
-    }
 }
 
 void merge(int* left, int sizeLeft, int* right, int sizeRight, int* result) {
@@ -142,9 +137,8 @@ void maxHeapify(int a[], int n, int i) {
 }
 
 void buildMaxHeap(int a[], int n) {
-    for (int i = n / 2 - 1; i >= 0; i--) {
+    for (int i = n / 2 - 1; i >= 0; i--)
         maxHeapify(a, n, i);
-    }
 }
 
 void heapSort(int a[], int n) {
@@ -157,6 +151,97 @@ void heapSort(int a[], int n) {
     }
 }
 
+int findMax(int a[], int n) {
+    int maxVal = a[0];
+
+    for (int i = 1; i < n; i++) {
+        if (a[i] > maxVal) 
+            maxVal = a[i];
+    }
+
+    return maxVal;
+}
+
+//Assume that array a contains only non-negative element
+void countingSort(int a[], int n) {
+    int maxVal = findMax(a, n);
+    int* index = new int[maxVal + 1] {0};
+    int* output = new int[n] {0};
+
+    for (int i = 0; i < n; i++)
+        index[a[i]]++;
+
+    for (int i = 1; i <= maxVal; i++)
+        index[i] += index[i - 1];
+
+    for (int i = n - 1; i >= 0; i--) {
+        output[index[a[i]] - 1] = a[i];
+        index[a[i]]--;
+    }
+
+    for (int i = 0; i < n; i++)
+        a[i] = output[i];
+
+    delete[] index;
+    delete[] output;
+    index = NULL;
+    output = NULL;
+}
+
+//Sort element base on the digit in exp unit
+void countingSort(int a[], int n, int exp)
+{
+    int *output = new int[n];
+    int count[10] = {0}; //There are only digits from 0-9 in each units
+
+    for (int i = 0; i < n; i++)
+        count[(a[i] / exp) % 10]++;
+
+    for (int i = 1; i < 10; i++)
+        count[i] += count[i - 1];
+
+    for (int i = n - 1; i >= 0; i--) {
+        output[count[(a[i] / exp) % 10] - 1] = a[i];
+        count[(a[i] / exp) % 10]--;
+    }
+
+    for (int i = 0; i < n; i++)
+        a[i] = output[i];
+
+    delete[] output;
+    output = NULL;
+}
+
+//Assume that array a contains only non-negative element
+void radixsort(int a[], int n)
+{
+    int maxVal = findMax(a, n);
+
+    for (int exp = 1; maxVal / exp > 0; exp *= 10)
+        countingSort(a, n, exp);
+}
+
+//Assume that array a contains only non-negative element
+//This algorithm is best for sorting real number
+//You should change data type of sample array to use this function
+void bucketSort(float a[], int n)
+{
+    ASBucket *b  = new ASBucket[n];
+
+    for (int i = 0; i < n; i++) {
+        int bi = n * a[i];
+        b[bi].Add(a[i]);
+    }
+
+    int index = 0;
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < b[i].size; j++)
+            a[index++] = b[i][j];
+
+    delete[] b;
+    b = NULL;
+}
+
 //Require: The input file must follows the rule below
 //First line: n is the size of the array
 //Second line: a1 a2 a3 ... an are the element of the array saperated by one space
@@ -166,9 +251,12 @@ void loadArray(int* &a, int &n) {
     f >> n;
 
     a = new int[n];
+    //cout << "\nInitial array:\n";
     for (int i = 0; i < n; i++) {
         f >> a[i];
+        //cout << a[i] << ' ';
     }
+    //cout << "\n\n";
 
     f.close();
 }
@@ -182,17 +270,25 @@ void makeTest() {
 
     f << n << '\n';
     for (int i = 0; i < n; i++) {
-        f << rand() % 1000000 << ' ';
+        f << rand() % INT_MAX << ' ';
     }
 
     f.close();
 }
 
 void printArray(int a[], int n) {
+    cout << "\nSorted array:\n";
     for (int i = 0; i < n; i++) {
         cout << a[i] << ' ';
     }
     cout << endl;
+}
+
+bool isAscOrd(int a[], int n) {
+    for (int i = 1; i < n; i++) {
+        if (a[i] < a[i - 1])
+            return false;
+    }
 }
 
 int main()
@@ -206,21 +302,25 @@ int main()
     loadArray(a, n);
 
     //Save the start time
-    cout << "******************* Sorting process started! *******************\n\n";
+    cout << "Sorting process started!\n\n";
     auto start = chrono::high_resolution_clock::now();
 
     //Implement sorting
-    heapSort(a, n);
+    mergeSort(a, n);
 
     //Calculate the execution time
     auto stop = chrono::high_resolution_clock::now();
     auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
 
     //Show the execution time
-    cout << "The sorting process finish in " << duration.count() / 1000 << " ms.\n";
+    cout << "The sorting process finished in " << duration.count() / 1000 << " ms.\n";
 
     //Output
     //printArray(a, n);
+
+    if (isAscOrd(a, n))
+        cout << "\nNon-descending sorted correctly!\n";
+    else cout << "\nNon-descending sorted uncorrectly!\n";
 
     delete[] a;
     a = NULL;
