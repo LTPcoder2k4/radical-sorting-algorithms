@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <fstream>
 #include <chrono>
+#include <time.h>
 using namespace std;
 
 void selectionSort(int a[], int n) {
@@ -173,6 +174,7 @@ void loadArray(int* &a, int &n) {
 }
 
 void makeTest() {
+    srand(time(0));
     ofstream f("Input.txt");
 
     int n;
@@ -196,7 +198,7 @@ void printArray(int a[], int n) {
 int main()
 {
     //Produce test case automatically
-    //makeTest();
+    makeTest();
 
     //Initialize input
     int n;
@@ -208,7 +210,7 @@ int main()
     auto start = chrono::high_resolution_clock::now();
 
     //Implement sorting
-    quickSort(a, n);
+    heapSort(a, n);
 
     //Calculate the execution time
     auto stop = chrono::high_resolution_clock::now();
