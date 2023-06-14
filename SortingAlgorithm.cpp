@@ -3,7 +3,6 @@
 #include <fstream>
 #include <chrono>
 #include <time.h>
-#include "ASBucket.h"
 using namespace std;
 
 void selectionSort(int a[], int n) {
@@ -218,27 +217,6 @@ void radixsort(int a[], int n)
 
     for (int exp = 1; maxVal / exp > 0; exp *= 10)
         countingSort(a, n, exp);
-}
-
-//Assume that array a contains only non-negative element
-//This algorithm is best for sorting real number
-//You should change data type of sample array to use this function
-void bucketSort(float a[], int n)
-{
-    ASBucket *b  = new ASBucket[n];
-
-    for (int i = 0; i < n; i++) {
-        int bi = n * a[i];
-        b[bi].Add(a[i]);
-    }
-
-    int index = 0;
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < b[i].size; j++)
-            a[index++] = b[i][j];
-
-    delete[] b;
-    b = NULL;
 }
 
 //Require: The input file must follows the rule below

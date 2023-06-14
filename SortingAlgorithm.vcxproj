@@ -127,8 +127,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ASBucket.cpp" />
-    <ClCompile Include="ASBucket.h" />
     <ClCompile Include="SortingAlgorithm.cpp" />
   </ItemGroup>
   <ItemGroup>
