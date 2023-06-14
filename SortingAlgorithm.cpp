@@ -56,7 +56,6 @@ void merge(int* left, int sizeLeft, int* right, int sizeRight, int* result) {
     }
 
     if (i < sizeLeft) copyArray(left + i, left + sizeLeft, result + k);
-    k += sizeLeft - i;
 
     if (j < sizeRight) copyArray(right + j, right + sizeRight, result + k);
 }
