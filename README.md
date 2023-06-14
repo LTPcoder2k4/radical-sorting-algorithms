@@ -6,26 +6,17 @@ This repository contains implementations of various fundamental sorting algorith
 * Merge Sort
 * Quick Sort
 * Heap Sort
+* Counting Sort
+* Radix Sort
+* Bucket Sort
 
 ## Usage
 ### Sorting Process and Time Measurement
 To measure the execution time of the sorting process and display it to the console, you can follow the example code snippet below:
 
-    // Save the start time
-    cout << "******************* Sorting process started! *******************\n\n";
-    auto start = chrono::high_resolution_clock::now();
-
-    // Implement sorting
-    quickSort(a, n);
-
-    // Calculate the execution time
-    auto stop = chrono::high_resolution_clock::now();
-    auto duration = chrono::duration_cast<chrono::microseconds>(stop - start);
-
-    // Show the execution time
-    cout << "The sorting process finished in " << duration.count() / 1000 << " ms.\n";
+    measure(a, n, mergeSort);
   
-Replace the `quickSort(a, n)` function call with the desired sorting algorithm of your choice.
+Replace the `mergeSort` function call with the desired sorting algorithm of your choice. Moreover, you can call many `measure` functions to compare many sorting algorithms.
 
 ### Input File
 The repository includes a file named `Input.txt` which can be used to store input cases for sorting. The input file must follow the specified format:
