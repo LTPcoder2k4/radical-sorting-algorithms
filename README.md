@@ -8,7 +8,6 @@ This repository contains implementations of various fundamental sorting algorith
 * Heap Sort
 * Counting Sort
 * Radix Sort
-* Bucket Sort
 
 ## Usage
 ### Sorting Process and Time Measurement
