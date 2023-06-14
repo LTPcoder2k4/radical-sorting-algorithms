@@ -291,22 +291,13 @@ bool isAscOrd(int a[], int n) {
     }
 }
 
-int main()
-{
-    //Produce test case automatically
-    //makeTest();
-
-    //Initialize input
-    int n;
-    int* a;
-    loadArray(a, n);
-
+void measure(int a[], int n, void (*sort)(int[], int)) {
     //Save the start time
-    cout << "Sorting process started!\n\n";
+    cout << "\nSorting process started!\n\n";
     auto start = chrono::high_resolution_clock::now();
 
     //Implement sorting
-    mergeSort(a, n);
+    sort(a, n);
 
     //Calculate the execution time
     auto stop = chrono::high_resolution_clock::now();
@@ -318,9 +309,25 @@ int main()
     //Output
     //printArray(a, n);
 
-    if (isAscOrd(a, n))
-        cout << "\nNon-descending sorted correctly!\n";
-    else cout << "\nNon-descending sorted uncorrectly!\n";
+    //Make sure that the sorting algorithm was processed correctly
+    //if (isAscOrd(a, n)) cout << "\nNon-descending sorted correctly!\n";
+    //else cout << "\nNon-descending sorted uncorrectly!\n";
+}
+
+int main()
+{
+    //Produce test case automatically
+    //makeTest();
+
+    //Initialize input
+    int n;
+    int* a;
+    loadArray(a, n);
+
+    measure(a, n, mergeSort);
+    measure(a, n, heapSort);
+    measure(a, n, quickSort);
+    measure(a, n, radixsort);
 
     delete[] a;
     a = NULL;
