@@ -126,7 +126,7 @@ void maxHeapify(int a[], int n, int i) {
     if (r < n && a[r] > a[largest])
         largest = r;
 
-    //Not need to do any thing when the node is at right order
+    //No need to do anything when the node is at the right order
     if (largest != i) {
         swap(a[i], a[largest]);
 
